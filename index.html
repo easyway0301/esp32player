@@ -3,80 +3,193 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seeed Xiao Esp32S3學習網站</title>
+  <title>ESP32‑S3 教學網站</title>
 
-  <!-- Google AdSense（結構上是正確的，實際顯示需通過審核） -->
+  <!-- Google AdSense（通過審核後才會顯示） -->
   <script async
     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1749995304255800"
-    crossorigin="anonymous">
-  </script>
+    crossorigin="anonymous"></script>
 
   <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background-color: #f5f5f5;
       margin: 0;
-      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
     }
 
     header {
-      background-color: #4a90e2;
+      background: linear-gradient(135deg, #2563eb, #1e40af);
       color: white;
-      padding: 16px;
-      text-align: center;
+      padding: 32px 20px;
     }
 
-    main {
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
       padding: 20px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
     }
 
-    .card {
-      background: white;
+    nav {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+
+    nav h3 {
+      margin-top: 0;
+      font-size: 16px;
+    }
+
+    nav a {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      background-color: #eef2ff;
+      color: var(--primary);
+    }
+
+    section {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    section h2 {
+      margin-top: 0;
+      color: var(--primary);
+    }
+
+    pre {
+      background: #0f172a;
+      color: #e5e7eb;
       padding: 16px;
       border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      max-width: 500px;
-      margin: auto;
+      overflow-x: auto;
+      font-size: 14px;
     }
 
-    button {
-      margin-top: 12px;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      background-color: #4a90e2;
-      color: white;
-      cursor: pointer;
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: var(--muted);
     }
 
-    button:hover {
-      background-color: #357abd;
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>歡迎來到我的網頁</h1>
-    <p>這是一個很簡單的 HTML 範例</p>
-  </header>
+<header>
+  <h1>ESP32‑S3 入門教學</h1>
+  <p>從零開始學 ESP32‑S3、MicroPython 與硬體控制</p>
+</header>
+
+<div class="container">
+
+  <nav>
+    <h3>📘 教學章節</h3>
+    <a href="#intro">1️⃣ 認識 ESP32‑S3</a>
+    <a href="#setup">2️⃣ 開發環境安裝</a>
+    <a href="#blink">3️⃣ 第一個程式：LED 閃爍</a>
+    <a href="#gpio">4️⃣ GPIO 腳位說明</a>
+  </nav>
 
   <main>
-    <div class="card">
-      <h2>內容區塊</h2>
-      <p>
-        這個網頁只有使用 HTML + CSS，<br>
-        適合當作學習或測試用。
-      </p>
-      <button onclick="sayHello()">點我</button>
-    </div>
-  </main>
 
-  <script>
-    function sayHello() {
-      alert("你好！這是 JavaScript 彈出的訊息 👋");
-    }
-  </script>
+    <section id="intro">
+      <h2>1️⃣ 認識 ESP32‑S3</h2>
+      <p>
+        ESP32‑S3 是一顆由樂鑫（Espressif）推出的微控制器，
+        內建 Wi‑Fi、Bluetooth，並支援 USB 與觸控功能，
+        非常適合用來做 IoT 與教學專案。
+      </p>
+    </section>
+
+    <section id="setup">
+      <h2>2️⃣ 開發環境安裝</h2>
+      <p>本教學使用 <strong>MicroPython + Thonny</strong>：</p>
+      <ol>
+        <li>下載並安裝 Thonny</li>
+        <li>將 ESP32‑S3 連接電腦</li>
+        <li>燒錄 MicroPython 韌體</li>
+      </ol>
+    </section>
+
+    <section id="blink">
+      <h2>3️⃣ 第一個程式：LED 閃爍</h2>
+      <p>以下是最基本的 LED 閃爍範例：</p>
+      <pre>
+from machine import Pin
+import time
+
+led = Pin(2, Pin.OUT)
+
+while True:
+    led.on()
+    time.sleep(1)
+    led.off()
+    time.sleep(1)
+      </pre>
+    </section>
+
+    <section id="gpio">
+      <h2>4️⃣ GPIO 腳位說明</h2>
+      <p>
+        ESP32‑S3 的 GPIO 腳位可用來控制 LED、按鈕、繼電器、
+        感測器等元件。使用前請注意哪些腳位可安全輸出。
+      </p>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  © 2026 ESP32‑S3 教學網站｜教學用途
+</footer>
 
 </body>
 </html>
