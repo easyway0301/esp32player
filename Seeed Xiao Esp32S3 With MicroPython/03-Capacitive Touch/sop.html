@@ -1,1 +1,193 @@
-1
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>Seeed XIAO ESP32-S3 TouchPad 觸控教學</title>
+
+<style>
+    body {
+        font-family: Arial, "Microsoft JhengHei", sans-serif;
+        line-height: 1.9;
+        max-width: 980px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+        background-color: #f5f7fa;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #555;
+        margin-bottom: 50px;
+    }
+
+    section {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 40px;
+        margin-bottom: 50px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+        margin-top: 0;
+        border-left: 6px solid #4CAF50;
+        padding-left: 14px;
+    }
+
+    p {
+        margin: 14px 0;
+    }
+
+    ul {
+        margin-left: 22px;
+    }
+
+    .highlight {
+        background: #e8f5e9;
+        border-left: 6px solid #4caf50;
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        font-size: 16px;
+    }
+
+    .warning {
+        background: #fff3e0;
+        border-left: 6px solid #ff9800;
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    /* Code block (GitHub style) */
+    .code-block {
+        position: relative;
+        background: #0d1117;
+        color: #c9d1d9;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 30px 0;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 14px;
+        overflow-x: auto;
+    }
+
+    .code-block pre {
+        margin: 0;
+        white-space: pre;
+    }
+
+    .copy-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #238636;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 14px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .copy-btn:hover {
+        background: #2ea043;
+    }
+
+    a {
+        color: #2e7d32;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>ESP32-S3 MicroPython 入門教學</h1>
+<div class="subtitle">TouchPad 觸控感測（GPIO1）實作</div>
+
+<section>
+    <h2>教學說明</h2>
+
+    <p>
+        本範例將示範如何在 <strong>Seeed XIAO ESP32-S3</strong> 上，
+        使用 <strong>TouchPad（電容觸控）</strong> 功能來偵測是否被人手或導線觸碰。
+    </p>
+
+    <div class="highlight">
+        <strong>本範例重點：</strong>
+        <ul>
+            <li>使用 <strong>GPIO1</strong> 作為 TouchPad</li>
+            <li>讀取原始觸控數值</li>
+            <li>透過門檻值判斷是否「被觸碰」</li>
+        </ul>
+    </div>
+</section>
+
+<section>
+    <h2>MicroPython 範例程式</h2>
+
+    <div class="warning">
+        ⚠️ 程式為無限迴圈執行，<br>
+        若要停止程式，請在 <strong>Thonny 連按兩次 Ctrl + C</strong>
+    </div>
+
+    <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><code>
+from machine import TouchPad, Pin
+import time
+
+# 使用 GPIO1 的 Touch 功能
+touch = TouchPad(Pin(1))
+
+# 根據實測數值設定門檻
+# 未觸碰：約 17331
+# 觸  碰：約 147034
+THRESHOLD = 50000
+
+# 進入無限迴圈
+# ⚠️ 若要停止程式，需在 Thonny 按兩次 Ctrl + C
+while True:
+    # 讀取觸控感測值
+    # ⚠️ ESP32-S3 的 Touch：
+    #   - 沒碰時：數值通常較小
+    #   - 觸碰時：數值會變得很大
+    val = touch.read()
+    
+    # 將原始數值印出來，方便觀察與校正門檻
+    print(val)
+
+    # 判斷是否「被觸碰」
+    # 門檻值需依實際環境調整
+    if val > THRESHOLD:
+        print("⚡ GPIO1 被觸碰")
+        
+    # 稍作延遲，避免刷太快
+    time.sleep(0.1)
+        </code></pre>
+    </div>
+</section>
+
+<script>
+function copyCode(btn) {
+    const code = btn.nextElementSibling.innerText;
+    navigator.clipboard.writeText(code);
+    btn.innerText = "Copied!";
+    setTimeout(() => btn.innerText = "Copy", 1500);
+}
+</script>
+
+</body>
+</html>
