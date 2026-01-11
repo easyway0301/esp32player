@@ -19,10 +19,10 @@
 ## 📖 線上教學文件（SOP）
 
 👉 **請從這裡開始閱讀完整教學：**  
-🔗  
+🔗  （GitHub Pages）
 https://easyway0301.github.io/Seeed%20Xiao%20Esp32S3%20With%20MicroPython/01-Flash%20MicroPython%20onto%20the%20Board/sop.html
-
-（GitHub Pages）
+🔗  （YouTube）
+https://youtu.be/c7OXmXeBEP4
 
 ---
 
@@ -35,15 +35,3 @@ https://easyway0301.github.io/Seeed%20Xiao%20Esp32S3%20With%20MicroPython/01-Fla
   - 官方網站：https://thonny.org
 
 ---
-
-## 🐍 為什麼選擇 MicroPython？
-
-- 語法簡單、學習曲線低
-- 適合教學與快速原型開發
-- 可直接在板子上即時執行與測試程式
-- 非常適合 ESP32 系列開發板
-
----
-
-## 📁 專案結構（簡要）
-
