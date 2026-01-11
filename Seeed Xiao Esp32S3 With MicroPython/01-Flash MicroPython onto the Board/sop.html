@@ -2,56 +2,85 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>ESP32-S3 MicroPython 教學</title>
+    <title>Flash MicroPython onto the Board</title>
     <style>
         body {
             font-family: Arial, "Microsoft JhengHei", sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
+            line-height: 1.8;
+            max-width: 900px;
             margin: 40px auto;
+            color: #222;
+        }
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            margin-top: 40px;
+            border-left: 6px solid #4CAF50;
+            padding-left: 10px;
         }
         img {
             max-width: 100%;
             display: block;
-            margin: 0 auto;
+            margin: 20px auto 10px;
         }
         .source {
             font-size: 14px;
             color: #555;
             text-align: center;
-            margin-top: 8px;
+        }
+        ol {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <!-- 圖片 -->
-    <img src="front-indication.png" alt="XIAO ESP32-S3 Front Indication">
+<h1>ESP32-S3 MicroPython 入門教學</h1>
 
-    <!-- 圖片來源 -->
-    <div class="source">
-        圖片來源：
-        <a href="https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/" target="_blank">
-            https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/
-        </a>
-    </div>
+<h2>第一步：認識 ESP32-S3 開發板</h2>
+<p>
+在開始之前，先來認識這塊 ESP32-S3 開發板上的兩個重要按鈕。
+</p>
+<p>
+<strong>面向板子正面（USB 接口朝下）時：</strong>
+</p>
+<ul>
+    <li><strong>左邊為 BOOT 按鈕</strong>：主要用於進入燒錄（下載）模式。</li>
+    <li><strong>右邊為 RESET（重開機）按鈕</strong>：用來重新啟動板子。</li>
+</ul>
 
-    <hr>
+<img src="front-indication.png" alt="XIAO ESP32-S3 Front Indication">
 
-    <!-- 步驟 -->
-    <h2>操作步驟</h2>
-    <ol>
-        <li>
-            下載並安裝
-            <a href="https://thonny.org" target="_blank">Thonny</a>
-        </li>
-        <li>
-            將 ESP32-S3 連接電腦
-        </li>
-        <li>
-            燒錄 MicroPython 韌體
-        </li>
-    </ol>
+<div class="source">
+    圖片來源：
+    <a href="https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/" target="_blank">
+        https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/
+    </a>
+</div>
+
+<h2>第二步：下載並安裝 Thonny</h2>
+<p>
+Thonny 是一款非常適合初學者的 Python / MicroPython 開發環境。
+</p>
+<p>
+請前往官方網站下載並安裝：
+<a href="https://thonny.org" target="_blank">https://thonny.org</a>
+</p>
+
+<h2>第三步：將 ESP32-S3 連接電腦</h2>
+<p>
+使用 USB 傳輸線將 ESP32-S3 開發板連接到電腦。
+</p>
+<p>
+連接完成後，電腦應能辨識到新的序列埠（COM Port）。
+</p>
+
+<h2>第四步：燒錄 MicroPython 韌體</h2>
+<p>
+開啟 Thonny，選擇對應的 ESP32-S3 裝置，
+並依照指示將 MicroPython 韌體燒錄至開發板中。
+</p>
 
 </body>
 </html>
