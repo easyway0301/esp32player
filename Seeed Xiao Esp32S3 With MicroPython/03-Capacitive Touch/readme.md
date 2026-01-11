@@ -97,15 +97,3 @@ while True:
 * 電容觸控版 **互動裝置 / 教具**
 
 ---
-
-## 📌 適合對象
-
-* MicroPython 初學者
-* ESP32-S3 入門學習者
-* 國中 / 高中 / 創客教學
-* 互動裝置、感測專題
-
----
-
-✍️ 教學作者：EasyWay
-📦 平台：ESP32 / MicroPython / Seeed Studio
