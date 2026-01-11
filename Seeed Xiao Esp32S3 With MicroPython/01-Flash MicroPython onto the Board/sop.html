@@ -1,40 +1,83 @@
+<meta charset="UTF-8">
+<title>ESP32-S3 MicroPython 入門教學</title>
 
+<style>
+    body {
+        font-family: Arial, "Microsoft JhengHei", sans-serif;
+        line-height: 1.9;
+        max-width: 960px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+        background-color: #fafafa;
+    }
 
+    h1 {
+        text-align: center;
+        margin-bottom: 50px;
+    }
 
-    <meta charset="UTF-8">
-    <title>ESP32-S3 MicroPython 入門教學</title>
-    <style>
-        body {
-            font-family: Arial, "Microsoft JhengHei", sans-serif;
-            line-height: 1.8;
-            max-width: 900px;
-            margin: 40px auto;
-            color: #222;
-        }
-        h1 {
-            text-align: center;
-        }
-        h2 {
-            margin-top: 40px;
-            border-left: 6px solid #4CAF50;
-            padding-left: 10px;
-        }
-        img {
-            max-width: 100%;
-            display: block;
-            margin: 20px auto 10px;
-        }
-        .source {
-            font-size: 14px;
-            color: #555;
-            text-align: center;
-        }
-        ol {
-            margin-top: 20px;
-        }
-    </style>
+    h2 {
+        margin-top: 60px;
+        border-left: 6px solid #4CAF50;
+        padding-left: 12px;
+    }
 
+    p {
+        margin: 12px 0;
+    }
 
+    ul {
+        margin-left: 20px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 25px auto 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .source {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .tip {
+        background: #f1f8e9;
+        border-left: 6px solid #8bc34a;
+        padding: 14px 18px;
+        margin: 20px 0;
+        border-radius: 6px;
+    }
+
+    .warning {
+        background: #fff3e0;
+        border-left: 6px solid #ff9800;
+        padding: 14px 18px;
+        margin: 20px 0;
+        border-radius: 6px;
+    }
+
+    .video {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    a {
+        color: #2e7d32;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
 
 <h1>ESP32-S3 MicroPython 入門教學</h1>
 
@@ -42,9 +85,8 @@
 <p>
 在開始之前，先來認識這塊 ESP32-S3 開發板上的兩個重要按鈕。
 </p>
-<p>
-<strong>面向板子正面（USB 接口朝上）時：</strong>
-</p>
+
+<p><strong>面向板子正面（USB 接口朝上）時：</strong></p>
 <ul>
     <li><strong>左邊為 RESET（重開機）按鈕</strong>：用來重新啟動板子。</li>
     <li><strong>右邊為 BOOT 按鈕</strong>：主要用於進入燒錄（bootloader）模式。</li>
@@ -55,42 +97,67 @@
 <div class="source">
     圖片來源：
     <a href="https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/" target="_blank">
-        https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/
+        Seeed Studio 官方文件
     </a>
 </div>
 
 <h2>第二步：下載並安裝 Thonny</h2>
 <p>
-  Thonny 是一款非常適合初學者的 MicroPython 開發環境。
+Thonny 是一款非常適合初學者的 MicroPython 開發環境。
 </p>
-<p>
-  請前往官方網站下載並安裝：
-  <a href="https://thonny.org" target="_blank">https://thonny.org</a>
-</p>
-  
-  <img src="thonny.png" alt="thonny">
 
+<p>
+請前往官方網站下載並安裝：
+<a href="https://thonny.org" target="_blank">https://thonny.org</a>
+</p>
+
+<img src="thonny.png" alt="Thonny IDE">
 
 <h2>第三步：將 ESP32-S3 連接電腦</h2>
 <p>
-  使用 USB 傳輸線將 ESP32-S3 開發板連接到電腦。
-</p><p><span style="font-size: 17px; background-color: rgb(255, 255, 255);">開啟 Thonny-&gt;執行-&gt;設定直譯器。</span></p>
-<p>Thonny應該要用哪一種直譯器執行你的程式？<span style="font-size: 17px; background-color: rgb(255, 255, 255);"></span>
-</p><p>選擇MicroPython (ESP32)</p><p>請注意選擇連接埠或是 WebREPL這裡，假如看到連接埠是Board CDC，這不是燒錄模式。</p>
-<p>要先切換成燒錄模式，可以按著Boot按鈕然後插上傳輸線。（有焊上排針比較不好按）。我習慣是按著Boot按鈕不放，然後按一下Reset按鈕，最後再放開Boot按鈕。按鈕按下去都會有喀一聲，別怕按壞。</p>
-<img src="normal.png" alt="normal.png">
-<p>
-  Serial debug unit連接埠才是燒錄模式。
+使用 USB 傳輸線將 ESP32-S3 開發板連接到電腦。
 </p>
-<img src="bootloader.png" alt="bootloader.png">
+
+<div class="tip">
+<strong>Thonny 設定路徑：</strong><br>
+執行 → 設定直譯器 → 選擇 <strong>MicroPython (ESP32)</strong>
+</div>
+
+<p>
+請注意「連接埠」的顯示狀態：
+</p>
+
+<div class="warning">
+如果顯示為 <strong>Board CDC</strong>，代表目前不是燒錄模式。
+</div>
+
+<p>
+要進入燒錄模式，可依以下步驟操作：
+</p>
+
+<ol>
+    <li>按住 <strong>BOOT</strong> 按鈕不放</li>
+    <li>按一下 <strong>RESET</strong> 按鈕</li>
+    <li>最後放開 <strong>BOOT</strong> 按鈕</li>
+</ol>
+
+<p>
+（按鈕會有清楚的「喀」一聲，正常使用不會按壞）
+</p>
+
+<img src="normal.png" alt="正常模式">
+<img src="bootloader.png" alt="燒錄模式">
 
 <h2>第四步：燒錄 MicroPython 韌體</h2>
-<p>依照下圖的設定，將 MicroPython 韌體燒錄至開發板中。</p>
-<img src="bootloader.png" alt="bootloader.png">
+<p>
+依照下圖的設定，將 MicroPython 韌體燒錄至開發板中。
+</p>
 
-完整步驟影片：https://youtu.be/c7OXmXeBEP4
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=c7OXmXeBEP4
-" target="_blank"><img src="http://img.youtube.com/vi/c7OXmXeBEP4/0.jpg" 
-alt="完整步驟影片" /></a>
+<img src="bootloader.png" alt="燒錄設定畫面">
 
-
+<div class="video">
+<p><strong>完整操作影片教學</strong></p>
+<a href="https://youtu.be/c7OXmXeBEP4" target="_blank">
+    <img src="http://img.youtube.com/vi/c7OXmXeBEP4/0.jpg" alt="完整步驟影片">
+</a>
+</div>
