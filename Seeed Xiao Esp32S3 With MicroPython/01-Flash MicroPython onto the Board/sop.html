@@ -120,33 +120,26 @@ Thonny 是一款非常適合初學者的 MicroPython 開發環境。
 
 <div class="tip">
 <strong>Thonny 設定路徑：</strong><br>
-執行 → 設定直譯器 → 選擇 <strong>MicroPython (ESP32)</strong>
+執行 → 設定直譯器 → Thonny應該要用哪一種直譯器執行你的程式? → 選擇 <strong>MicroPython (ESP32)</strong>
 </div>
 
 <p>
-請注意「連接埠」的顯示狀態：
+請注意「選擇連接埠或是 WebREPL」的顯示狀態：
 </p>
 
 <div class="warning">
-如果顯示為 <strong>Board CDC</strong>，代表目前不是燒錄模式。
-</div>
-
-<p>
-要進入燒錄模式，可依以下步驟操作：
-</p>
-
-<ol>
-    <li>按住 <strong>BOOT</strong> 按鈕不放</li>
-    <li>按一下 <strong>RESET</strong> 按鈕</li>
-    <li>最後放開 <strong>BOOT</strong> 按鈕</li>
-</ol>
-
-<p>
-（按鈕會有清楚的「喀」一聲，正常使用不會按壞）
-</p>
-
+如果顯示為 <strong>Board CDC</strong>，代表目前不是燒錄模式。(如下圖)</div>
 <img src="normal.png" alt="正常模式">
+
+<div class="warning">
+
+如果顯示為 <strong>Serial debug unit</strong>，才是燒錄模式。(如下圖)</div>
 <img src="bootloader.png" alt="燒錄模式">
+要進入燒錄模式，可依以下步驟操作：
+按住 BOOT 按鈕不放
+按一下 RESET 按鈕
+最後放開 BOOT 按鈕
+（按鈕會有清楚的「喀」一聲，正常使用不會按壞）
 
 <h2>第四步：燒錄 MicroPython 韌體</h2>
 <p>
