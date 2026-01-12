@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
+
+
+
   <!-- Google AdSense（通過審核後才會顯示） -->
-  <script async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1749995304255800"
-    crossorigin="anonymous"></script>
-  <meta charset="UTF-8" />
+  <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1749995304255800" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
   <title>ESP32 / MicroPython 教學文件</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     * { box-sizing: border-box; }
@@ -115,8 +113,8 @@
       .sidebar { display: none; }
     }
   </style>
-</head>
-<body>
+
+
 
 <header>
   從零開始學Esp32
@@ -129,31 +127,31 @@
 
     <!-- 搜尋框 -->
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="搜尋章節…" oninput="filterChapters()" />
+      <input type="text" id="searchInput" placeholder="搜尋章節…" oninput="filterChapters()">
     </div>
 
     <div class="group open">
       <div class="group-title" onclick="toggleGroup(this)">基礎</div>
       <div class="group-items">
-        <a class="active" onclick="loadPage(this, 'https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqa3NrTjRTRU9ueHFCSTkxbHpxbnpNRzJFaVg0Z3xBQ3Jtc0trbUdMSHNhMnlwWFdOVXhQbHpSb2JseVRxcWtsamp4azlGWHprYUNpWERaR2l3UTRqUExvRS1hVk84elZHSWRyeWhaRWZ5T0lGUGszRDkwWG93UFE1dldhdTFhUkxPOTZvMnJYc1ljdHN4bVhTejBGaw&q=https%3A%2F%2Feasyway0301.github.io%2FSeeed%2520Xiao%2520Esp32S3%2520With%2520MicroPython%2F01-Flash%2520MicroPython%2520onto%2520the%2520Board%2Fsop.html&v=c7OXmXeBEP4')">下載Thonny及燒錄韌體</a>
-        <a onclick="loadPage(this, 'https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbGEwaFBweEoxZEF5ZEZURGhDTHU0V2pxM3VLQXxBQ3Jtc0trNzh1WHgwc3k0WTdYWGdJSjF2R3d6ZU9wbjNXd3RaaUZKSDhhWHY2MGdnNjcxeUMxOVlzeW1Bc09IYmItMjg1R2tjQjI4MnlIbDJTcy1saGhkSmhZQ0pNamtQSzFoTGpLUnBEajRHaE5xWlFXNzMyZw&q=https%3A%2F%2Feasyway0301.github.io%2FSeeed%2520Xiao%2520Esp32S3%2520With%2520MicroPython%2F02-TurnOn%2520UserLed%2Fsop.html&v=t7Ce9VMCXps')">控制User LED燈</a>
+        <a class="active" onclick="loadPage(this, 'https://easyway0301.github.io/Seeed%20Xiao%20Esp32S3%20With%20MicroPython/01-Flash%20MicroPython%20onto%20the%20Board/sop.html')">下載Thonny及燒錄韌體</a>
+        <a onclick="loadPage(this, 'https://easyway0301.github.io/Seeed%20Xiao%20Esp32S3%20With%20MicroPython/02-TurnOn%20UserLed/sop.html')">控制User LED燈</a>
       </div>
     </div>
 
     <div class="group open">
       <div class="group-title" onclick="toggleGroup(this)">進階</div>
       <div class="group-items">
-        <a onclick="loadPage(this, 'https://easyway0301.github.io/')">稍等</a>
-        <a onclick="loadPage(this, 'https://easyway0301.github.io/')">稍等</a>
-        <a onclick="loadPage(this, 'https://easyway0301.github.io/')">稍等</a>
+        <a onclick="alert('章節準備中')">稍等</a>
+        <a onclick="alert('章節準備中')">稍等</a>
+        <a onclick="alert('章節準備中')">稍等</a>
       </div>
     </div>
 
     <div class="group open">
       <div class="group-title" onclick="toggleGroup(this)">實作</div>
       <div class="group-items">
-        <a onclick="loadPage(this, 'https://')">稍等</a>
-        <a onclick="loadPage(this, 'https://')">稍等</a>
+        <a onclick="alert('章節準備中')">稍等</a>
+        <a onclick="alert('章節準備中')">稍等</a>
       </div>
     </div>
 
@@ -161,7 +159,7 @@
 
   <!-- Content -->
   <main class="content">
-    <iframe id="viewer" src="https://easyway0301.github.io/"></iframe>
+    <iframe id="viewer" src="https://easyway0301.github.io/Seeed%20Xiao%20Esp32S3%20With%20MicroPython/01-Flash%20MicroPython%20onto%20the%20Board/sop.html"></iframe>
   </main>
 
 </div>
@@ -210,5 +208,4 @@
   }
 </script>
 
-</body>
-</html>
+
