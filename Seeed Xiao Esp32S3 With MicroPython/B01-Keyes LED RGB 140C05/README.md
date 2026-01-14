@@ -30,7 +30,8 @@ https://easyway0301.github.io/Seeed%20Xiao%20Esp32S3%20With%20MicroPython/B01-Ke
 
 ![Pin List](Pin-List.png)
 
-> 圖片來源：Seeed Studio 官方文件 :contentReference[oaicite:0]{index=0}
+圖片來源：Seeed Studio 官方文件
+[https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/)
 
 ---
 
