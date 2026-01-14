@@ -23,7 +23,8 @@
 
 ![Pin List for XIAO ESP32-S3](Pin-List.png)
 
-> 圖片來源：Seeed Studio 官方文件（XIAO ESP32-S3 硬體說明）
+圖片來源：Seeed Studio 官方文件
+[https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/)
 
 ---
 
