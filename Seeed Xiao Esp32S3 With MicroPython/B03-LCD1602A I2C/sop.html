@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>LCD1602A I2C 教學</title>
+
+<style>
+    body {
+        font-family: Arial, "Microsoft JhengHei", sans-serif;
+        line-height: 1.9;
+        max-width: 980px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+        background-color: #f5f7fa;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #555;
+        margin-bottom: 50px;
+    }
+
+    section {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 40px;
+        margin-bottom: 50px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+        margin-top: 0;
+        border-left: 6px solid #4CAF50;
+        padding-left: 14px;
+    }
+
+    p {
+        margin: 14px 0;
+    }
+
+    ul {
+        margin-left: 22px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 28px auto 10px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    .highlight {
+        background: #e8f5e9;
+        border-left: 6px solid #4caf50;
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        font-size: 16px;
+    }
+
+    /* Code block */
+    .code-block {
+        position: relative;
+        background: #0d1117;
+        color: #c9d1d9;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 30px 0;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 14px;
+        overflow-x: auto;
+    }
+
+    .code-block pre {
+        margin: 0;
+        white-space: pre;
+    }
+
+    .copy-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #238636;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 14px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .copy-btn:hover {
+        background: #2ea043;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>ESP32-S3 MicroPython 入門教學</h1>
+<div class="subtitle">LCD1602A I2C</div>
+
+<section>
+<h2>第一步：認識 LCD1602A I2C 模組</h2>
+
+<p>
+本教學使用 <strong>LCD1602A 文字顯示器（1602 LCD）</strong> 搭配 I2C 轉接板（PCF8574），
+只需兩條訊號線（SDA、SCL）即可顯示 16×2 文字。
+</p>
+
+<img src="Pin-List.png" alt="I2C LCD Pin List">
+
+<div class="source">
+圖片來源：<a href="https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/" target="_blank">
+Seeed Studio 官方文件
+</a>
+</div>
+
+<p>LCD1602A I2C 模組特點：</p>
+<ul>
+    <li>顯示尺寸：16 字 × 2 行</li>
+    <li>通訊方式：I2C（SDA / SCL）</li>
+    <li>常見 I2C 位址：0x27（部分模組為 0x3F）</li>
+</ul>
+</section>
+
+<section>
+<h2>第二步：MicroPython 控制範例</h2>
+
+<p>以下程式會在 LCD 上顯示兩行文字（第一行與第二行），然後保持顯示。</p>
+
+<div class="code-block">
+<button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('lcd-code').innerText)">Copy</button>
+<pre id="lcd-code">
+from time import sleep_ms
+from machine import I2C, Pin
+from esp8266_i2c_lcd import I2cLcd
+
+# I2C LCD 預設位址
+DEFAULT_I2C_ADDR = 0x27
+
+# 建立 I2C & LCD 物件
+i2c = I2C(scl=Pin(6), sda=Pin(5), freq=100000)
+lcd = I2cLcd(i2c, DEFAULT_I2C_ADDR, 2, 16)
+
+# 清除螢幕
+lcd.clear()
+
+# 顯示第一行文字
+lcd.move_to(0, 0)
+lcd.putstr("Hello ESP32-S3")
+
+# 顯示第二行文字
+lcd.move_to(0, 1)
+lcd.putstr("LCD1602A I2C OK")
+
+# 保持顯示
+while True:
+    sleep_ms(1000)
+</pre>
+</div>
+</section>
+
+<section>
+<h2>補充說明</h2>
+
+<p>
+如果你看到的 LCD 顯示亂碼或空白：<br>
+請先確認 I2C 位址是否正確（0x27 / 0x3F），以及 SDA、SCL 接線是否接反。
+</p>
+
+<p>若不確定 I2C 位址，可先執行 <strong>I2C Scan</strong> 程式確認。</p>
+</section>
+
+</body>
+</html>
