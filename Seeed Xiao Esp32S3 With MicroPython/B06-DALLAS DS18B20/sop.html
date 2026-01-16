@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>ESP32-S3 MicroPython｜DS18B20 溫度感測教學</title>
+
+<style>
+    body {
+        font-family: Arial, "Microsoft JhengHei", sans-serif;
+        line-height: 1.9;
+        max-width: 980px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+        background-color: #f5f7fa;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #555;
+        margin-bottom: 50px;
+    }
+
+    section {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 40px;
+        margin-bottom: 50px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+        margin-top: 0;
+        border-left: 6px solid #4CAF50;
+        padding-left: 14px;
+    }
+
+    p {
+        margin: 14px 0;
+    }
+
+    ul {
+        margin-left: 22px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 28px auto 10px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    .highlight {
+        background: #e8f5e9;
+        border-left: 6px solid #4caf50;
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        font-size: 16px;
+    }
+
+    /* Code block */
+    .code-block {
+        position: relative;
+        background: #0d1117;
+        color: #c9d1d9;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 30px 0;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 14px;
+        overflow-x: auto;
+    }
+
+    .code-block pre {
+        margin: 0;
+        white-space: pre;
+    }
+
+    .copy-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #238636;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 14px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+</head>
+
+<body>
+
+<h1>ESP32-S3 MicroPython｜DS18B20 溫度感測</h1>
+<div class="subtitle">單線通訊溫度感測器教學</div>
+
+<section>
+<h2>第一步：認識 DS18B20 感測器</h2>
+<p>
+DS18B20 是一個數位溫度感測器，透過 <strong>1-Wire</strong> 單線通訊方式讀取溫度。  
+需外接 <strong>4.7kΩ 上拉電阻</strong> 連接 VCC。
+</p>
+<div class="highlight">
+<strong>模組規格：</strong><br>
+• 測量範圍：-55 ~ 125°C<br>
+• 精準度：±0.5°C<br>
+• 通訊方式：1-Wire（單線）<br>
+• 建議拉高電阻：4.7kΩ
+</div>
+<p><strong>I/O 腳位接線範例（Seeed XIAO ESP32-S3）：</strong></p>
+<ul>
+<li>VCC → 3V3</li>
+<li>GND → GND</li>
+<li>DATA → GPIO 9（加上 4.7kΩ 上拉到 3V3）</li>
+</ul>
+</section>
+
+<section>
+<h2>第二步：MicroPython 範例程式</h2>
+<p>以下程式碼可直接在 Thonny 上執行，讀取 DS18B20 溫度一次。</p>
+
+<div class="code-block">
+<button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code>
+from machine import Pin                # 匯入 Pin 類別
+import onewire, ds18x20               # 匯入 1-Wire 與 DS18X20 模組
+import time                            # 匯入時間模組
+
+# === 建立單線通訊腳位 ===
+dat = Pin(9, Pin.IN, Pin.PULL_UP)     # DATA 腳位接 GPIO9，內部上拉
+
+# === 建立 OneWire 與 DS18B20 物件 ===
+ow = onewire.OneWire(dat)             # 初始化 1-Wire
+ds = ds18x20.DS18X20(ow)              # 初始化 DS18B20
+
+# === 掃描總線上的感測器 ===
+roms = ds.scan()                       # 回傳感測器列表
+print("找到 DS18B20:", roms)           # 顯示找到的感測器
+
+# === 判斷是否有感測器 ===
+if not roms:
+    print("❌ 沒有偵測到 DS18B20，請檢查接線與 4.7kΩ 上拉電阻")
+else:
+    ds.convert_temp()                  # 發送溫度轉換命令
+    time.sleep_ms(750)                 # 等待轉換完成（約 750ms）
+
+    # === 讀取每個感測器的溫度 ===
+    for rom in roms:
+        temp = ds.read_temp(rom)       # 讀取溫度（°C）
+        print("🌡 溫度:", temp, "°C")  # 顯示結果
+</code></pre>
+</div>
+</section>
+
+<section>
+<h2>第三步：執行結果</h2>
+<ul>
+<li>在 Thonny 控制台顯示找到的 DS18B20 ID</li>
+<li>顯示對應溫度（單位 °C）</li>
+<li>若無感測器或接線錯誤會顯示錯誤提示</li>
+</ul>
+
+<div class="highlight">
+📌 延伸練習建議：<br>
+✔ 定時讀取溫度並記錄<br>
+✔ 顯示在 OLED / LCD 螢幕<br>
+✔ 結合蜂鳴器或 LED 做溫度警示
+</div>
+</section>
+
+<script>
+function copyCode(btn) {
+    const code = btn.nextElementSibling.innerText;
+    navigator.clipboard.writeText(code);
+    btn.innerText = "Copied!";
+    setTimeout(() => btn.innerText = "Copy", 1500);
+}
+</script>
+
+</body>
+</html>
