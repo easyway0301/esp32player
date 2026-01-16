@@ -18,8 +18,13 @@ LCD1602A 是一個 16×2 文字顯示器（LCD），使用 I2C 通訊只需兩�
 - 通訊方式：I2C（SDA / SCL）  
 - 常見 I2C 位址：`0x27`（部分模組為 `0x3F`）
 
-📷 Pin List 圖片來源：  
-Seeed Studio 官方文件 
+
+### 引腳示意圖（參考）
+![LCD1602A 示意圖](LCD1602A%20I2C.jpeg)
+![Pin List](Pin-List.png)
+
+圖片來源：Seeed Studio 官方文件
+[https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/](https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/)
 
 ---
 
@@ -56,7 +61,7 @@ lcd.putstr("LCD1602A I2C OK")
 # 保持顯示
 while True:
     sleep_ms(1000)
-```python
+```
 
 ### 💻 程式碼
 esp8266_i2c_lcd.py
@@ -146,7 +151,7 @@ class I2cLcd(LcdApi):
         byte = (MASK_RS | (self.backlight << SHIFT_BACKLIGHT) | ((data & 0x0f) << SHIFT_DATA))
         self.i2c.writeto(self.i2c_addr, bytearray([byte | MASK_E]))
         self.i2c.writeto(self.i2c_addr, bytearray([byte]))
-```python
+```
 
 ### 💻 程式碼
 lcd_api.py
@@ -352,4 +357,4 @@ class LcdApi:
     def hal_sleep_us(self, usecs):
         """Sleep for some time (given in microseconds)."""
         time.sleep_us(usecs)
-```python
+```
