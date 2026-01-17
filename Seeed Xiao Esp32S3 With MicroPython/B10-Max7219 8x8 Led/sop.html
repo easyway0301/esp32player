@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>BXX－MAX7219 8x8 點陣顯示｜MicroPython SOP</title>
+<style>
+body {
+    font-family: Arial, "Microsoft JhengHei", sans-serif;
+    line-height: 1.8;
+}
+pre {
+    background: #111;
+    color: #eee;
+    padding: 16px;
+    overflow-x: auto;
+}
+h1, h2 {
+    border-bottom: 2px solid #ccc;
+}
+</style>
+</head>
+<body>
+
+<h1>BXX－MAX7219 8x8 點陣顯示（SPI）</h1>
+
+<p>
+本 SOP 示範如何在 <b>Seeed XIAO ESP32S3</b> 上，
+使用 <b>MAX7219 8x8 LED 點陣模組</b>，
+透過 <b>MicroPython + SPI</b> 顯示簡單文字（HELLO）。
+</p>
+
+<hr>
+
+<h2>一、硬體接線說明</h2>
+
+<table border="1" cellpadding="6">
+<tr><th>MAX7219</th><th>XIAO ESP32S3</th></tr>
+<tr><td>VCC</td><td>5V 或 3V3</td></tr>
+<tr><td>GND</td><td>GND</td></tr>
+<tr><td>DIN</td><td>GPIO 9 (MOSI)</td></tr>
+<tr><td>CS</td><td>GPIO 8</td></tr>
+<tr><td>CLK</td><td>GPIO 7 (SCK)</td></tr>
+</table>
+
+<hr>
+
+<h2>二、程式功能說明</h2>
+
+<ul>
+<li>使用 SPI 初始化 MAX7219</li>
+<li>設定亮度與清空畫面</li>
+<li>自建英文字母點陣資料</li>
+<li>逐字顯示 <b>HELLO</b></li>
+<li>不使用 while 迴圈</li>
+</ul>
+
+<hr>
+
+<h2>三、MicroPython 程式碼（逐行註釋）</h2>
+
+<pre>
+from machine import Pin, SPI        # 匯入 GPIO 與 SPI 控制模組
+import max7219                      # 匯入 MAX7219 點陣驅動模組
+import time                         # 匯入時間模組（延遲用）
+
+# === 初始化 SPI（硬體 SPI）===
+spi = SPI(
+    1,                              # 使用 SPI 匯流排 1
+    baudrate=10_000_000,            # SPI 時脈 10MHz
+    polarity=0,                     # SPI 極性 0
+    phase=0,                        # SPI 相位 0
+    sck=Pin(7),                     # SCK 腳位接 GPIO7
+    mosi=Pin(9)                     # MOSI 腳位接 GPIO9
+)
+
+# CS（Chip Select）腳位設定
+cs = Pin(8, Pin.OUT)                # CS 接 GPIO8，輸出模式
+
+# === 初始化 MAX7219（1 個 8x8 模組）===
+display = max7219.Matrix8x8(
+    spi,                            # SPI 物件
+    cs,                             # CS 腳位
+    1                               # 模組數量（1 個 8x8）
+)
+
+display.brightness(5)               # 設定亮度（0～15）
+display.fill(0)                     # 清空顯示內容
+display.show()                      # 將資料送到顯示器
+
+# === 字母點陣資料（每個 byte = 一列）===
+letters = {
+    "H": [0x42,0x42,0x42,0x7E,0x42,0x42,0x42,0x00],
+    "E": [0x7E,0x40,0x40,0x7C,0x40,0x40,0x7E,0x00],
+    "L": [0x40,0x40,0x40,0x40,0x40,0x40,0x7E,0x00],
+    "O": [0x3C,0x42,0x42,0x42,0x42,0x42,0x3C,0x00]
+}
+
+text = "HELLO"                      # 要顯示的文字
+
+# === 使用 for 迴圈逐字顯示 ===
+for char in text:
+    display.fill(0)                 # 每顯示一個字前先清空畫面
+
+    pattern = letters.get(char, [0]*8)  # 取得字母點陣資料
+
+    # 逐列解析 bit，設定像素
+    for row in range(8):
+        display.pixel(row, 0, (pattern[row] & 0x80) >> 7)
+        display.pixel(row, 1, (pattern[row] & 0x40) >> 6)
+        display.pixel(row, 2, (pattern[row] & 0x20) >> 5)
+        display.pixel(row, 3, (pattern[row] & 0x10) >> 4)
+        display.pixel(row, 4, (pattern[row] & 0x08) >> 3)
+        display.pixel(row, 5, (pattern[row] & 0x04) >> 2)
+        display.pixel(row, 6, (pattern[row] & 0x02) >> 1)
+        display.pixel(row, 7, (pattern[row] & 0x01))
+
+    display.show()                  # 更新顯示內容
+    time.sleep(0.5)                 # 每個字停留 0.5 秒
+</pre>
+
+<hr>
+
+<h2>四、顯示效果</h2>
+
+<p>
+8x8 點陣會依序顯示：
+</p>
+
+<pre>
+H → E → L → L → O
+</pre>
+
+<hr>
+
+<h2>五、延伸練習</h2>
+
+<ul>
+<li>增加更多字母或數字字型</li>
+<li>串接多個 MAX7219 模組做跑馬燈</li>
+<li>搭配按鈕或搖桿控制顯示內容</li>
+</ul>
+
+<hr>
+
+<p>✔ 可直接存成 <b>SOP.html</b> 使用</p>
+
+</body>
+</html>
