@@ -5,85 +5,101 @@
 <title>ESP32-S3 MicroPython｜SG90 伺服馬達教學</title>
 
 <style>
-body {
-    font-family: Arial, "Microsoft JhengHei", sans-serif;
-    background: #f5f7fa;
-    color: #222;
-    line-height: 1.9;
-    max-width: 980px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
+    body {
+        font-family: Arial, "Microsoft JhengHei", sans-serif;
+        line-height: 1.9;
+        max-width: 980px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+        background-color: #f5f7fa;
+    }
 
-h1 {
-    text-align: center;
-    margin-bottom: 10px;
-}
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
 
-.subtitle {
-    text-align: center;
-    color: #555;
-    margin-bottom: 50px;
-}
+    .subtitle {
+        text-align: center;
+        color: #555;
+        margin-bottom: 50px;
+    }
 
-section {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 40px;
-    margin-bottom: 50px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
+    section {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 40px;
+        margin-bottom: 50px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
 
-h2 {
-    margin-top: 0;
-    border-left: 6px solid #4CAF50;
-    padding-left: 14px;
-}
+    h2 {
+        margin-top: 0;
+        border-left: 6px solid #4CAF50;
+        padding-left: 14px;
+    }
 
-p {
-    margin: 14px 0;
-}
+    p {
+        margin: 14px 0;
+    }
 
-ul {
-    margin-left: 22px;
-}
+    ul {
+        margin-left: 22px;
+    }
 
-.highlight {
-    background: #e8f5e9;
-    border-left: 6px solid #4CAF50;
-    padding: 16px 20px;
-    border-radius: 8px;
-    margin: 20px 0;
-    font-size: 16px;
-}
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 28px auto 10px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
 
-.code-block {
-    background: #0d1117;
-    color: #c9d1d9;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 30px 0;
-    font-family: Consolas, monospace;
-    font-size: 14px;
-    overflow-x: auto;
-}
+    .highlight {
+        background: #e8f5e9;
+        border-left: 6px solid #4caf50;
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        font-size: 16px;
+    }
 
-.copy-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 14px;
-    cursor: pointer;
-    font-size: 13px;
-}
+    /* Code block */
+    .code-block {
+        position: relative;
+        background: #0d1117;
+        color: #c9d1d9;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 30px 0;
+        font-family: Consolas, Monaco, monospace;
+        font-size: 14px;
+        overflow-x: auto;
+    }
 
-.copy-btn:hover {
-    background: #43a047;
-}
+    .code-block pre {
+        margin: 0;
+        white-space: pre;
+    }
+
+    .copy-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #238636;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 14px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .copy-btn:hover {
+        background: #2ea043;
+    }
 </style>
 </head>
 
@@ -111,6 +127,15 @@ SG90 小型伺服馬達可由 PWM 控制角度，常用於機器手臂、舵機�
     <li>紅色線 → 3V3</li>
     <li>褐色線 → GND</li>
 </ul>
+
+<img src="Pin-List.png" alt="I2C LCD Pin List">
+
+<div class="source">
+圖片來源：<a href="https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/" target="_blank">
+Seeed Studio 官方文件
+</a>
+</div>
+    <img src="MG90S(180)Servo.jpeg" alt="MG90S(180)Servo.jpeg">
 </section>
 
 <section>
@@ -169,7 +194,15 @@ servo.deinit()                        # 停止 PWM
 ✔ 結合 LED 做動作提示
 </div>
 </section>
+<section>
+    <h2>完整操作影片教學</h2>
 
+    <div class="video">
+        <a href="https://youtu.be/joe9dCsNczE" target="_blank">
+            <img src="http://img.youtube.com/vi/joe9dCsNczE/0.jpg" alt="完整步驟影片">
+        </a>
+    </div>
+</section>
 <script>
 function copyCode(btn) {
     const code = btn.nextElementSibling.innerText;
