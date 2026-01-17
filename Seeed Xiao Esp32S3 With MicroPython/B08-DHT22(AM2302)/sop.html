@@ -149,6 +149,7 @@ Seeed Studio 官方文件
 
 <section>
 <h2>MicroPython 範例程式（單次測量）</h2>
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 
 <pre><code>
 import machine              # 匯入 machine 模組，用來控制硬體
@@ -178,6 +179,13 @@ except OSError as e:
 </div>
 
 </section>
-
+<script>
+function copyCode(btn) {
+    const code = btn.nextElementSibling.innerText;
+    navigator.clipboard.writeText(code);
+    btn.innerText = "Copied!";
+    setTimeout(() => btn.innerText = "Copy", 1500);
+}
+</script>
 </body>
 </html>
