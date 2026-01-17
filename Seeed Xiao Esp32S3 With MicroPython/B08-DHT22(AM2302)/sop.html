@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>ESP32-S3 MicroPython｜DHT22 溫溼度感測 SOP</title>
+
+<style>
+body {
+    font-family: Arial, "Microsoft JhengHei", sans-serif;
+    background: #f5f7fa;
+    color: #222;
+    line-height: 1.9;
+    max-width: 980px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+section {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 36px;
+    margin-bottom: 50px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+h2 {
+    margin-top: 0;
+    border-left: 6px solid #2196F3;
+    padding-left: 14px;
+}
+
+.highlight {
+    background: #e3f2fd;
+    border-left: 6px solid #2196f3;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+pre {
+    background: #0d1117;
+    color: #c9d1d9;
+    border-radius: 12px;
+    padding: 20px;
+    overflow-x: auto;
+}
+</style>
+</head>
+
+<body>
+
+<h1>ESP32-S3 MicroPython 教學</h1>
+<div class="subtitle">DHT22 溫溼度感測模組</div>
+
+<section>
+<h2>模組介紹</h2>
+
+<p>
+DHT22（AM2302）是一款常見的<strong>數位溫溼度感測模組</strong>，
+可直接使用 MicroPython 內建 <code>dht</code> 模組讀取。
+</p>
+
+<div class="highlight">
+<strong>模組特性：</strong><br>
+• 溫度範圍：-40 ~ 80°C<br>
+• 濕度範圍：0 ~ 100% RH<br>
+• 通訊方式：單線數位通訊<br>
+• 讀取間隔：≥ 2 秒
+</div>
+</section>
+
+<section>
+<h2>接線方式（Seeed XIAO ESP32-S3）</h2>
+
+<ul>
+    <li>VCC → 3V3</li>
+    <li>GND → GND</li>
+    <li>DATA → GPIO 9</li>
+</ul>
+
+<div class="highlight">
+📌 DATA 腳位通常需要 4.7kΩ ~ 10kΩ 上拉電阻（多數模組已內建）
+</div>
+</section>
+
+<section>
+<h2>MicroPython 範例程式（單次測量）</h2>
+
+<pre><code>
+import machine              # 匯入 machine 模組，用來控制硬體
+import time                 # 匯入 time 模組，提供延遲功能
+import dht                  # 匯入 MicroPython 內建的 DHT 驅動
+
+# 建立 DHT22 物件，資料腳位接在 GPIO9
+dht22 = dht.DHT22(machine.Pin(9))
+
+try:
+    dht22.measure()         # 觸發一次量測（必須先呼叫）
+    
+    temp = dht22.temperature()  # 讀取溫度（攝氏）
+    hum = dht22.humidity()      # 讀取濕度（百分比）
+
+    # 格式化輸出溫溼度
+    print("🌡 溫度: {:.1f}°C, 💧 濕度: {:.1f}%".format(temp, hum))
+
+except OSError as e:
+    # 若感測器沒有回應，會進入例外處理
+    print("讀取失敗:", e)
+</code></pre>
+
+<div class="highlight">
+📌 官方建議兩次讀取間隔至少 <strong>2 秒</strong>，  
+否則容易出現讀取失敗。
+</div>
+
+</section>
+
+</body>
+</html>
