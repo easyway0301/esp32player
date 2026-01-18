@@ -39,8 +39,21 @@
         padding-left: 14px;
     }
 
+    p {
+        margin: 14px 0;
+    }
+
     ul {
         margin-left: 22px;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 28px auto 10px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     }
 
     .highlight {
@@ -52,7 +65,9 @@
         font-size: 16px;
     }
 
+    /* Code block */
     .code-block {
+        position: relative;
         background: #0d1117;
         color: #c9d1d9;
         border-radius: 12px;
@@ -63,8 +78,26 @@
         overflow-x: auto;
     }
 
-    pre {
+    .code-block pre {
         margin: 0;
+        white-space: pre;
+    }
+
+    .copy-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #238636;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 14px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .copy-btn:hover {
+        background: #2ea043;
     }
 </style>
 </head>
@@ -90,6 +123,8 @@ WS2812 是可程式控制的全彩 RGB LED，
     <li>GND → GND</li>
     <li>DIN → GPIO 9</li>
 </ul>
+<img src="Pin-List.png" alt="XIAO ESP32S3 腳位">
+<img src="Ws2812Led4x4.jpeg" alt="Ws2812Led4x4.jpeg">
 
 <div class="highlight">
 📌 建議 LED 顆數不多時可直接使用 GPIO，<br>
@@ -110,6 +145,7 @@ WS2812 是可程式控制的全彩 RGB LED，
 <h2>🧪 範例程式碼</h2>
 
 <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
 <pre>
 from machine import Pin
 import neopixel
@@ -152,6 +188,22 @@ np.write()
     <li>若 LED 不亮，請確認顆數設定是否正確。</li>
 </ul>
 </section>
+<section>
+    <h2>完整操作影片教學</h2>
 
+    <div class="video">
+        <a href="https://youtu.be/99bHGXUsAdg" target="_blank">
+            <img src="http://img.youtube.com/vi/99bHGXUsAdg/0.jpg" alt="完整步驟影片">
+        </a>
+    </div>
+</section>
+<script>
+function copyCode(btn) {
+    const code = btn.nextElementSibling.innerText;
+    navigator.clipboard.writeText(code);
+    btn.innerText = "Copied!";
+    setTimeout(() => btn.innerText = "Copy", 1500);
+}
+</script>
 </body>
 </html>
