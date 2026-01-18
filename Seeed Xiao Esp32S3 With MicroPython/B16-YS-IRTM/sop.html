@@ -103,14 +103,15 @@
 </head>
 
 <body>
-<h1>YS-IRTM 紅外線接收教學</h1>
+<h1>YS-IRTM 紅外線接收、發射教學</h1>
 <div class="subtitle">Seeed XIAO ESP32-S3 + MicroPython</div>
 
 <section>
 <h2>📌 模組簡介</h2>
 <p>
-YS-IRTM 是常用的紅外線接收模組，可用 UART 接收紅外線訊號，
+YS-IRTM 是常用的紅外線接收、發射模組，可用 UART 接收及發射紅外線訊號，
 本教學示範如何使用 MicroPython 接收 IR 訊號並重發。
+該模組主要用在NEC協議的遙控。
 </p>
 </section>
 
@@ -125,7 +126,7 @@ YS-IRTM 是常用的紅外線接收模組，可用 UART 接收紅外線訊號，
   <img src="Pin-List.png" alt="XIAO ESP32S3 腳位">
 <img src="YsIrtmReceiver.jpeg" alt="YsIrtmReceiver.jpeg">
 <div class="highlight">
-⚠ 注意：TXD 與 RXD 接線要反過來（TX → RX、RX → TX）
+⚠ 注意：TXD 與 RXD 接線要反過來（TX → RXD、RX → TXD）
 </div>
 </section>
 
@@ -147,6 +148,7 @@ import time                         # 匯入時間模組
 
 # ======== UART 設定 (TX=9, RX=8, 9600 bps) ========
 uart = UART(2, baudrate=9600, tx=9, rx=8)  
+# TX(GIPO 9) → RXD(YS-IRTM)、RX(GIPO 8) → TXD(YS-IRTM)
 
 # 儲存接收到的 IR 訊號
 ir_codes = []
