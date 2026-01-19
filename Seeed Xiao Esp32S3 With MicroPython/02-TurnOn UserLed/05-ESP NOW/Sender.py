@@ -23,10 +23,10 @@ sta.disconnect()
 # -------------------------------------------------
 # 初始化 ESP-NOW
 # -------------------------------------------------
-e = espnow.ESPNow()
+espSender = espnow.ESPNow()
 # 建立 ESP-NOW 物件
 
-e.active(True)
+espSender.active(True)
 # 啟用 ESP-NOW 功能
 
 # -------------------------------------------------
@@ -36,7 +36,7 @@ peer_mac = b'\x90pi\x0b\xe28'
 # 對方 ESP32 的 MAC 位址（bytes 格式）
 # 可用 wlan.config('mac') 在對方板子上查詢
 
-e.add_peer(peer_mac)
+espSender.add_peer(peer_mac)
 # 將對方加入 ESP-NOW 的通訊對象（peer）
 
 # -------------------------------------------------
@@ -48,7 +48,7 @@ print("Start sending...")
 # -------------------------------------------------
 # 傳送「打開 User LED」指令
 # -------------------------------------------------
-e.send(peer_mac, "打開UserLed".encode("utf-8"))
+espSender.send(peer_mac, "打開UserLed".encode("utf-8"))
 # 將中文字串轉成 UTF-8 bytes 後送出
 # ESP-NOW 只能傳送 bytes 資料
 
@@ -58,7 +58,7 @@ time.sleep(2)
 # -------------------------------------------------
 # 傳送「關掉 User LED」指令
 # -------------------------------------------------
-e.send(peer_mac, "關掉UserLed".encode("utf-8"))
+espSender.send(peer_mac, "關掉UserLed".encode("utf-8"))
 # 再次送出 UTF-8 編碼的中文指令
 
 print("傳送完成")
