@@ -36,10 +36,3 @@
 
 ---
 
-> 💡 建議做法：  
-> 將這些圖片統一放在專案根目錄的 `assets` 或 `img` 資料夾中，SOP HTML 可以用相對路徑引用，例如：
->
-> ```html
-> <img src="../assets/Pin-List.png" alt="XIAO ESP32S3 Pin List">
-> ```
-> 這樣可以所有 SOP HTML 共用同一份圖片，方便維護。
