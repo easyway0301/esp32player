@@ -1,24 +1,30 @@
 # 檔案來源：https://github.com/micropython/micropython-lib/blob/master/micropython/drivers/storage/sdcard/sdcard.py
+
 """
-MicroPython driver for SD cards using SPI bus.
+使用 SPI 介面操作 SD 卡的 MicroPython 驅動程式
 
-Requires an SPI bus and a CS pin.  Provides readblocks and writeblocks
-methods so the device can be mounted as a filesystem.
+需求：
+- 一組 SPI 匯流排
+- 一個 CS（Chip Select）腳位
 
-Example usage on pyboard:
+此類別提供 readblocks 與 writeblocks 方法
+讓 SD 卡可以被掛載成檔案系統
+
+------------------------------------------------
+使用範例（pyboard）：
 
     import pyb, sdcard, os
     sd = sdcard.SDCard(pyb.SPI(1), pyb.Pin.board.X5)
     pyb.mount(sd, '/sd2')
     os.listdir('/')
 
-Example usage on ESP8266:
+------------------------------------------------
+使用範例（ESP8266 / ESP32）：
 
     import machine, sdcard, os
     sd = sdcard.SDCard(machine.SPI(1), machine.Pin(15))
     os.mount(sd, '/sd')
-    os.listdir('/')
-
+    os.listdir('/sd')
 """
 
 from micropython import const
