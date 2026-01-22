@@ -57,39 +57,6 @@
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
       }
 
-      .img-wrapper {
-        position: relative;
-        display: inline-block;
-      }
-
-      /* hover 判斷區域 */
-      .img-hover-zone {
-        display: inline-block;
-      }
-
-      /* 原圖 */
-      .img-hover-zone img {
-        max-width: 100%;
-        cursor: zoom-in;
-        transition:
-          transform 0.25s ease,
-          box-shadow 0.25s ease;
-      }
-
-      /* hover 只判斷 hover-zone，不會消失 */
-      .img-hover-zone:hover img {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(1.6);
-        z-index: 9999;
-        max-width: 90vw;
-        max-height: 90vh;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        background: #fff;
-        border-radius: 12px;
-      }
-
       .redbackground {
         background: #ff6250;
         border-left: 6px solid #ff1a00;
@@ -230,12 +197,10 @@
         <li>🟡 黃燈：GPIO 8</li>
         <li>🟢 綠燈：GPIO 7</li>
       </ul>
-
-      <div class="img-wrapper">
-        <div class="img-hover-zone">
-          <img src="../00-Assets/Pin-List.png" alt="Pin List" />
-        </div>
-      </div>
+    </section>
+    
+    <section>
+      <img src="../00-Assets/Pin-List.png" alt="Pin List" />
 
       <div class="source">
         圖片來源：
