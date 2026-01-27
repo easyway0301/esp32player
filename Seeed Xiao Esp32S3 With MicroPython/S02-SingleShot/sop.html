@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>ESP32S3 Camera Single Shot SOP</title>
+<style>
+body {
+    font-family: Arial, "Microsoft JhengHei", sans-serif;
+    line-height: 1.9;
+    max-width: 980px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #222;
+    background-color: #f5f7fa;
+}
+h1 { text-align: center; margin-bottom: 10px; }
+.subtitle { text-align: center; color: #555; margin-bottom: 50px; }
+section { background: #ffffff; border-radius: 14px; padding: 40px; margin-bottom: 50px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+h2 { margin-top: 0; border-left: 6px solid #4caf50; padding-left: 14px; }
+p { margin: 14px 0; }
+ul { margin-left: 22px; }
+img { max-width: 100%; height: auto; display: block; margin: 28px auto 10px; border-radius: 12px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+.highlight-yellow { background-color: #ffff00; color: #000; padding:2px 4px; border-radius:2px; font-weight:bold; }
+.redbackground { background:#FF8E90; border-left:6px solid #ff1a00; padding:16px 20px; border-radius:8px; margin:20px 0; font-size:16px; }
+.greenbackground { background:#e8f5e9; border-left:6px solid #4caf50; padding:16px 20px; border-radius:8px; margin:20px 0; font-size:16px; }
+.orangebackground { background:#fff3e0; border-left:6px solid #ff9800; padding:16px 20px; border-radius:8px; margin:20px 0; font-size:16px; }
+a { color:#2e7d32; text-decoration:none; font-weight:bold; }
+a:hover { text-decoration:underline; }
+.code-block { position: relative; background:#0d1117; color:#c9d1d9; border-radius:12px; padding:20px; margin:30px 0; font-family:Consolas, Monaco, monospace; font-size:14px; overflow-x:auto; }
+.code-block pre { margin:0; white-space:pre; }
+.copy-btn { position:absolute; top:12px; right:12px; background:#1f6feb; color:white; border:none; border-radius:6px; padding:6px 14px; cursor:pointer; font-size:13px; }
+.copy-btn:hover { background:#388bfd; }
+</style>
+<script>
+function copyCode(btn){
+    const code = btn.nextElementSibling.querySelector('code');
+    navigator.clipboard.writeText(code.innerText).then(()=>{ btn.innerText='Copied!'; setTimeout(()=>{btn.innerText='Copy';},1000); });
+}
+</script>
+</head>
+<body>
+
+<h1>ESP32S3 Camera Single Shot 教學</h1>
+<p class="subtitle">快速拍攝單張照片，存成 JPEG</p>
+
+<section>
+<h2>1️⃣ 韌體下載與注意事項</h2>
+<div class="orangebackground">
+請務必下載 <strong>v0.6.0 (mpy 1.27.x)</strong> 的 <a href="https://github.com/cnadler86/micropython-camera-API/releases" target="_blank">mpy_cam-v1.27.0-XIAO_ESP32S3.zip</a>，不要使用最新版。
+</div>
+</section>
+
+<section>
+<h2>2️⃣ Single Shot 拍照程式碼</h2>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    <pre><code># 建立 Camera 物件
+from camera import Camera, GrabMode, PixelFormat, FrameSize, GainCeiling
+
+cam = Camera(
+    pixel_format=PixelFormat.JPEG,
+    frame_size=FrameSize.WQXGA,
+    jpeg_quality=99,
+    fb_count=2,
+    grab_mode=GrabMode.WHEN_EMPTY
+)
+cam.init()
+
+# 拍攝單張照片
+img = cam.capture()
+
+# 儲存為 JPEG
+with open("snapshot.jpg", "wb") as f:
+    f.write(img)
+
+print("影像已存成 snapshot.jpg")
+
+# 釋放影像記憶體
+cam.free_buffer()</code></pre>
+</div>
+<div class="greenbackground">程式碼簡單示範如何拍攝單張 JPEG 照片並存檔。</div>
+</section>
+
+<section>
+<h2>3️⃣ 解析度選擇參考</h2>
+<div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    <pre><code>FrameSize    長     寬    品質
+R128x128    128   128    偏綠
+QQVGA       160   120    偏綠
+HQVGA       240   176    偏綠
+R240X240    240   240    偏綠
+QVGA        320   240
+WQXGA      2048  1536</code></pre>
+</div>
+<div class="orangebackground">依不同解析度可能會偏綠或影像失真，選擇合適解析度以取得最佳畫質。</div>
+</section>
+
+<section>
+<h2>4️⃣ 重要提示</h2>
+<div class="redbackground">
+- 拍攝前務必先下載指定韌體版本 <br>
+- 避免使用過高解析度導致 RAM 不足 <br>
+- 每次拍攝完成後，請釋放影像 buffer
+</div>
+</section>
+
+</body>
+</html>
