@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
-<head>
-<meta charset="UTF-8" />
-<title>ESP32 StaMode HTTP Server SOP</title>
 
-<style>
-  body {
+<head>
+  <meta charset="UTF-8" />
+  <title>從零開始學Esp32</title>
+
+  <style>
+    body {
       font-family: Arial, "Microsoft JhengHei", sans-serif;
       line-height: 1.9;
       max-width: 980px;
@@ -13,41 +14,102 @@
       padding: 0 20px;
       color: #222;
       background-color: #f5f7fa;
-  }
-  h1 { text-align: center; margin-bottom: 10px; }
-  .subtitle { text-align: center; color: #555; margin-bottom: 40px; }
-  section {
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 50px;
+    }
+
+    section {
       background: #ffffff;
       border-radius: 14px;
-      padding: 36px;
+      padding: 40px;
       margin-bottom: 50px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  }
-  h2 { margin-top: 0; border-left: 6px solid #4caf50; padding-left: 14px; }
-  p { margin: 14px 0; }
-  ul { margin-left: 22px; }
-  .greenbackground {
+    }
+
+    h2 {
+      margin-top: 0;
+      border-left: 6px solid #4caf50;
+      padding-left: 14px;
+    }
+
+    p {
+      margin: 14px 0;
+    }
+
+    ul {
+      margin-left: 22px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 28px auto 10px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .highlight-yellow {
+      background-color: #ffff00;
+      /* 螢光黃背景 */
+      color: #000000;
+      /* 黑色文字，比較清楚 */
+      padding: 2px 4px;
+      /* 可選：讓背景有點空間 */
+      border-radius: 2px;
+      /* 可選：圓角 */
+      font-weight: bold;
+      /* 可選：文字加粗更醒目 */
+    }
+
+    .redbackground {
+      background: #ff8e90;
+      border-left: 6px solid #ff1a00;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      font-size: 16px;
+    }
+
+    .greenbackground {
       background: #e8f5e9;
       border-left: 6px solid #4caf50;
       padding: 16px 20px;
       border-radius: 8px;
       margin: 20px 0;
-  }
-  .orangebackground {
+      font-size: 16px;
+    }
+
+    .orangebackground {
       background: #fff3e0;
       border-left: 6px solid #ff9800;
       padding: 16px 20px;
       border-radius: 8px;
       margin: 20px 0;
-  }
-  .redbackground {
-      background: #ffebee;
-      border-left: 6px solid #f44336;
-      padding: 16px 20px;
-      border-radius: 8px;
-      margin: 20px 0;
-  }
-  .code-block {
+      font-size: 16px;
+    }
+
+    a {
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Code block */
+    .code-block {
       position: relative;
       background: #0d1117;
       color: #c9d1d9;
@@ -57,142 +119,213 @@
       font-family: Consolas, Monaco, monospace;
       font-size: 14px;
       overflow-x: auto;
-  }
-  .code-block pre {
+    }
+
+    .code-block pre {
       margin: 0;
       white-space: pre;
-  }
-  .copy-btn {
+    }
+
+    .copy-btn {
       position: absolute;
       top: 12px;
       right: 12px;
       background: #1f6feb;
+      /* GitHub 藍 */
       color: white;
       border: none;
       border-radius: 6px;
       padding: 6px 14px;
       cursor: pointer;
       font-size: 13px;
-  }
-  .copy-btn:hover { background: #388bfd; }
-</style>
+    }
 
-<script>
-function copyCode(btn) {
-    const code = btn.nextElementSibling.innerText;
-    navigator.clipboard.writeText(code).then(() => {
-        btn.innerText = "Copied!";
-        setTimeout(() => btn.innerText = "Copy", 1200);
-    });
-}
-</script>
+    .copy-btn:hover {
+      background: #388bfd;
+    }
+
+    .link-icons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .link-icons a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: #f1f3f6;
+      color: #222;
+      text-decoration: none;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .link-icons a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    /* ⭐ 關鍵：圖示等寬 */
+    .link-icons .icon {
+      width: 28px;
+      /* 固定寬度 */
+      text-align: center;
+      /* 置中 emoji */
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .link-icons .text {
+      font-weight: 500;
+    }
+  </style>
 </head>
+
 <body>
 
-<h1>ESP32 StaMode HTTP Server</h1>
-<p class="subtitle">使用 MicroPython 在 Station 模式下建立 HTTP 伺服器</p>
+  <h1>ESP32‑S3 Wi-Fi HTTP Server (UserLed 控制)</h1>
 
-<section>
-  <h2>📌 說明</h2>
-  <p>
-    本範例示範如何讓 ESP32-S3 以 Station（STA）模式連接既有 Wi-Fi，並啟動簡易 HTTP Server。
-  </p>
-  <ul>
-    <li>連接家庭或辦公無線網路（SSID + Password）</li>
-    <li>建立 socket 伺服器等待 TCP 連線</li>
-    <li>收到請求後回傳簡單的 HTTP 回應</li>
-  </ul>
-  <div class="orangebackground">
-    📌 注意：確保 SSID 與密碼填寫正確，且設備能接收到 Wi-Fi 訊號。
-  </div>
-</section>
+  <section>
+    <h2>需要的材料</h2>
+    <div class="orangebackground">
+      <ul>
+        <li>Seeed XIAO Esp32-S3 開發板1片。</li>
+      </ul>
+    </div>
+  </section>
 
-<section>
-  <h2>📶 Station 連線設定</h2>
-  <p>請修改下面變數以配合你的 Wi-Fi 網路：</p>
-  <ul>
-    <li><code>SSID</code> → 無線網路名稱</li>
-    <li><code>PASSWORD</code> → 該網路密碼</li>
-  </ul>
-</section>
+  <section>
+    <h2>認識 ESP32-S3 開發板</h2>
+    <p>ESP32‑S3 以 Wi-Fi Station 模式連線，並建立 HTTP Server 控制板上的 UserLed。</p>
+    <ul>
+      <li>連接你的 Wi-Fi 網路</li>
+      <li>建立 HTTP Server，監聽 Port 80</li>
+      <li>透過瀏覽器或網頁請求控制 UserLed 開關</li>
+    </ul>
+    <div class="greenbackground">✔ 適合初學 MicroPython & ESP32 的 IoT 範例</div>
+  </section>
 
-<section>
-  <h2>💻 完整程式碼</h2>
-  <div class="code-block">
-    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-    <pre><code>
-import network          # 匯入 Wi-Fi 模組
-import socket           # 匯入 socket 模組
-import time             # 匯入時間延遲模組
+  <section>
+    <h2>開啟 Thonny 並執行範例程式</h2>
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre><code>import network
+import socket
+import time
+from machine import Pin
 
-# ===== Wi-Fi SSID / 密碼 =====
+# ===== Wi-Fi 設定 =====
 SSID = "你的WiFi名稱"
 PASSWORD = "你的WiFi密碼"
 
-# 建立 Station 介面
+# 啟動 STA
 sta = network.WLAN(network.STA_IF)
 sta.active(True)
-print("開始連線至 Wi-Fi:", SSID)
-
-# 連線
 sta.connect(SSID, PASSWORD)
+
+# 等待連線
 while not sta.isconnected():
-    print("連線中...")
     time.sleep(1)
 
-print("已連線！IP:", sta.ifconfig()[0])
+ip = sta.ifconfig()[0]
+print("IP:", ip)
 
-# ===== 建立 HTTP Server =====
+# ===== HTTP Server =====
 addr = socket.getaddrinfo("0.0.0.0", 80)[0][-1]
 s = socket.socket()
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind(addr)
 s.listen(1)
-print("HTTP Server 已啟動，監聽 port 80")
 
-try:
-    while True:
-        client, addr = s.accept()
-        print("Client 連線:", addr)
-        request = client.recv(1024).decode()
-        print("收到:", request)
+# ===== 控制 UserLed =====
+UserLed = Pin(21, Pin.OUT)
 
-        # 回傳 HTTP Response
-        response = "HTTP/1.1 200 OK\r\n\r\nHello from ESP32"
-        client.send(response.encode())
-        client.close()
+def 打開UserLed():
+    print("打開UserLed")
+    UserLed.value(0)
 
-except KeyboardInterrupt:
-    print("停止伺服器")
+def 關掉UserLed():
+    print("關掉UserLed")
+    UserLed.value(1)
 
-finally:
-    s.close()
-    sta.active(False)
-    </code></pre>
-  </div>
-</section>
+print("HTTP Server Ready")
+print("打開UserLed：http://" + ip + "/turnOn")
+print("關掉UserLed：http://" + ip + "/turnOff")
 
-<section>
-  <h2>🧪 測試方式</h2>
-  <ol>
-    <li>上傳程式到 ESP32-S3 並重新啟動</li>
-    <li>等待連上你的 Wi-Fi</li>
-    <li>在瀏覽器中輸入顯示出的 IP</li>
-    <li>顯示 “Hello from ESP32” 即表示成功</li>
-  </ol>
-  <div class="greenbackground">
-    ✔ 若成功連線，ESP32 將會在序列埠印出 IP 位址
-  </div>
-</section>
+while True:
+    cl, addr = s.accept()
+    print("Client:", addr)
+    req = cl.recv(1024).decode()
+    print("REQ:")
+    print(req)
 
-<section>
-  <h2>⚠ 注意事項</h2>
-  <ul>
-    <li>請確保網路密碼正確無誤</li>
-    <li>Wi-Fi 熱點不能設置成隱藏 SSID</li>
-    <li>Server 需等待並處理 client 的 TCP 請求</li>
-  </ul>
-</section>
+    if "GET /turnOn " in req:
+        打開UserLed()
+        response = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n打開UserLed OK"
+
+    if "GET /turnOff " in req:
+        關掉UserLed()
+        response = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8\r\n\r\n關掉UserLed OK"
+
+    cl.send(response.encode())
+    cl.close()
+</code></pre>
+    </div>
+  </section>
+
+  <section>
+    <h2>🧪 測試方式</h2>
+    <ol>
+      <li>將程式上傳至 ESP32‑S3</li>
+      <li>透過序列埠查看印出的 IP</li>
+      <li>瀏覽器輸入http://你的IP/turnOn或 /turnOff</li>
+      <li>LED 亮/滅表示操作成功</li>
+    </ol>
+    <div class="orangebackground">📌 若無法控制 LED，請確認 Wi-Fi 名稱及密碼正確</div>
+  </section>
+
+  <section>
+    <h2>⚠ 注意事項</h2>
+    <ul>
+      <li>UserLed 為板上預設 LED（GPIO21）</li>
+      <li>Server 需可接受外部連線</li>
+      <li>避免將密碼寫死在程式碼中，實務可用 config 檔</li>
+    </ul>
+  </section>
+
+  <!-- 相關連結的section -->
+  <section>
+    <h2>🔗 相關連結</h2>
+
+    <div class="link-icons">
+      <a href="https://easyway0301.github.io/" target="_blank">
+        <span class="icon">🏠</span>
+        <span class="text">主頁</span>
+      </a>
+
+      <a href="mailto:easyway0301@gmail.com">
+        <span class="icon">✉️</span>
+        <span class="text">Email</span>
+      </a>
+    </div>
+  </section>
+
+  <script>
+    function copyCode(btn) {
+      const code = btn.nextElementSibling.innerText;
+      navigator.clipboard.writeText(code);
+      btn.innerText = "Copied!";
+      setTimeout(() => btn.innerText = "Copy", 1500);
+    }
+  </script>
 
 </body>
+
 </html>
