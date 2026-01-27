@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>ESP32 AP + HTTP Server SOP</title>
+
+  <style>
+    body {
+      font-family: Arial, "Microsoft JhengHei", sans-serif;
+      line-height: 1.9;
+      max-width: 980px;
+      margin: 40px auto;
+      padding: 0 20px;
+      color: #222;
+      background-color: #f5f7fa;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 50px;
+    }
+
+    section {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 40px;
+      margin-bottom: 50px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      border-left: 6px solid #4caf50;
+      padding-left: 14px;
+    }
+
+    h3 {
+      margin-top: 30px;
+      color: #2e7d32;
+    }
+
+    p {
+      margin: 14px 0;
+    }
+
+    ul {
+      margin-left: 22px;
+    }
+
+    /* 提示框 */
+    .greenbackground {
+      background: #e8f5e9;
+      border-left: 6px solid #4caf50;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .orangebackground {
+      background: #fff3e0;
+      border-left: 6px solid #ff9800;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .redbackground {
+      background: #ffebee;
+      border-left: 6px solid #f44336;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    /* Code block */
+    .code-block {
+      position: relative;
+      background: #0d1117;
+      color: #c9d1d9;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 30px 0;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 14px;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0;
+      white-space: pre;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #1f6feb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .copy-btn:hover {
+      background: #388bfd;
+    }
+  </style>
+
+  <script>
+    function copyCode(btn) {
+      const code = btn.nextElementSibling.innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.innerText = "Copied!";
+        setTimeout(() => btn.innerText = "Copy", 1200);
+      });
+    }
+  </script>
+</head>
+
+<body>
+
+<h1>ESP32 AP + HTTP Server</h1>
+<p class="subtitle">使用 MicroPython 建立 Wi-Fi 熱點與簡易網頁伺服器</p>
+
+<!-- 說明 -->
+<section>
+  <h2>📘 教學說明</h2>
+  <p>
+    本範例示範如何讓 ESP32 啟動 <b>AP 模式（基地台）</b>，
+    並建立一個簡單的 <b>HTTP Server</b>。
+  </p>
+
+  <ul>
+    <li>ESP32 自行開 Wi-Fi 熱點</li>
+    <li>手機 / 電腦可直接連線</li>
+    <li>瀏覽器輸入 IP 即可看到回應</li>
+  </ul>
+
+  <div class="greenbackground">
+    ✔ 不需要外部路由器，也能直接連 ESP32
+  </div>
+</section>
+
+<!-- 連線資訊 -->
+<section>
+  <h2>📡 AP 連線資訊</h2>
+
+  <ul>
+    <li><b>SSID：</b>ESP32_AP</li>
+    <li><b>密碼：</b>12345678</li>
+    <li><b>連線後 IP：</b>通常為 <code>192.168.4.1</code></li>
+  </ul>
+
+  <div class="orangebackground">
+    📌 密碼長度必須至少 8 個字元，否則 AP 會啟動失敗
+  </div>
+</section>
+
+<!-- 程式碼 -->
+<section>
+  <h2>💻 完整程式碼</h2>
+
+  <div class="code-block">
+    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    <pre><code>
+import network
+import socket
+import time
+
+# ---------- AP 設定 ----------
+SSID = "ESP32_AP"
+PASSWORD = "12345678"
+
+ap = network.WLAN(network.AP_IF)
+
+if ap.active():
+    ap.active(False)
+    print("已停掉舊的 AP")
+
+ap.active(True)
+ap.config(essid=SSID, password=PASSWORD, authmode=3)
+
+print("AP 已啟動")
+print("SSID:", SSID)
+print("密碼:", PASSWORD)
+print("IP:", ap.ifconfig()[0])
+
+addr = socket.getaddrinfo("0.0.0.0", 80)[0][-1]
+s = socket.socket()
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind(addr)
+s.listen(1)
+
+print("TCP Server 已建立，port 80")
+
+try:
+    while True:
+        cl, addr = s.accept()
+        print("Client 連線:", addr)
+        data = cl.recv(1024).decode()
+        print("收到:", data)
+
+        cl.send("HTTP/1.1 200 OK\r\n\r\nHello ESP32")
+        cl.close()
+
+except KeyboardInterrupt:
+    print("停止 Server")
+
+finally:
+    s.close()
+    ap.active(False)
+    </code></pre>
+  </div>
+</section>
+
+<!-- 測試方式 -->
+<section>
+  <h2>🧪 測試方式</h2>
+
+  <ol>
+    <li>燒錄程式到 ESP32</li>
+    <li>手機 / 電腦連線到 <b>ESP32_AP</b></li>
+    <li>打開瀏覽器，輸入：
+      <code>http://192.168.4.1</code>
+    </li>
+    <li>畫面出現 <b>Hello ESP32</b> 即成功</li>
+  </ol>
+
+  <div class="redbackground">
+    ⚠ 若重新燒錄失敗，請確認 Port 80 是否被其他程式佔用
+  </div>
+</section>
+
+</body>
+</html>
